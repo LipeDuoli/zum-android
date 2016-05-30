@@ -85,3 +85,6 @@ Bibliotecas da Google que oferecem retrocompatibilidade de versões do Android. 
    * play-services-identity: Google Address API
 
 ## Hierarquia de temas
+
+## Apresentação 19/05
+https://docs.google.com/presentation/d/17gGeeS_u0BDub2xQll7QgA8vGnKFb-nRKc9JtG86fTU
