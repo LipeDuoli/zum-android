@@ -12,6 +12,13 @@
 ## Referência API
 http://api-hck.hotmart.com/hack-swagger/dist/index.html
 
+## Referência Layout
+https://zpl.io/Ze5pb9
+(hackathon@hotmart.com.br 123456)
+
+## Waffle
+https://waffle.io/Hotmart-Org/hack-app
+
 ### ~/.gradle/gradle.properties
 
 Utilizamos variáveis de ambiente globais a fim de parametrizar nossas referências a recursos sensíveis. Uma delas é nossa KeyStore que armazena nossa chave de assinatura para publicarmos nossos Apps na Google Play Store.
