@@ -42,6 +42,7 @@ import com.hotmart.dragonfly.authenticator.service.OAuth2ServiceFactory;
 import com.hotmart.dragonfly.authenticator.service.UserService;
 import com.hotmart.dragonfly.authenticator.ui.AuthenticatorActivity;
 import com.hotmart.dragonfly.rest.model.request.UserSignupRequestVO;
+import com.hotmart.dragonfly.tools.PicassoTransformations;
 import com.hotmart.dragonfly.ui.BaseActivity;
 import com.hotmart.dragonfly.validation.UniqueEmailRule;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -196,6 +197,7 @@ public class SignUpActivity extends BaseActivity implements Validator.Validation
         int photoDimention = getResources().getDimensionPixelSize(R.dimen.avatar_dimention);
         Picasso.with(this)
                 .load(profile.getProfilePictureUri(photoDimention, photoDimention))
+                .transform(PicassoTransformations.getRoundedTransformation())
                 .error(R.drawable.ic_signup)
                 .placeholder(R.drawable.ic_signup)
                 .into(mPhotoProfile);
