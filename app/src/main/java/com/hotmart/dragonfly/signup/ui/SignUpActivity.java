@@ -19,6 +19,7 @@ package com.hotmart.dragonfly.signup.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.text.TextUtils;
@@ -85,6 +86,8 @@ public class SignUpActivity extends BaseActivity implements Validator.Validation
     ImageButton mPhotoProfile;
     @BindView(R.id.signup_with_facebook)
     ImageView mSignupWithFacebook;
+    @BindView(R.id.root_view)
+    CoordinatorLayout mRootView;
     private UserService mUserService;
     private Validator mValidator;
     private CallbackManager mCallbackManager;
@@ -162,12 +165,12 @@ public class SignUpActivity extends BaseActivity implements Validator.Validation
 
             @Override
             public void onCancel() {
-
+                Snackbar.make(mRootView, R.string.facebook_cancel, Snackbar.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(FacebookException error) {
-
+                Snackbar.make(mRootView, error.getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
             }
         });
     }

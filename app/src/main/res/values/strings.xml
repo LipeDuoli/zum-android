@@ -47,6 +47,7 @@
     <string name="current_password">Senha Atual</string>
     <string name="new_password">Nova senha</string>
     <string name="next">Próximo</string>
+    <string name="facebook_cancel">Login cancelado</string>
 
     <!-- RedefinePassActivity -->
     <string name="redefinir_senha_enviar">Enviar</string>
