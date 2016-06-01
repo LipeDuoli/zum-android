@@ -39,9 +39,11 @@ import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.hotmart.dragonfly.R;
+import com.hotmart.dragonfly.authenticator.service.FacebookRestService;
 import com.hotmart.dragonfly.authenticator.service.OAuth2ServiceFactory;
 import com.hotmart.dragonfly.authenticator.service.UserService;
 import com.hotmart.dragonfly.authenticator.ui.AuthenticatorActivity;
+import com.hotmart.dragonfly.rest.model.request.UserFacebookAccountVO;
 import com.hotmart.dragonfly.rest.model.request.UserSignupRequestVO;
 import com.hotmart.dragonfly.tools.PicassoTransformations;
 import com.hotmart.dragonfly.ui.BaseActivity;
@@ -91,6 +93,7 @@ public class SignUpActivity extends BaseActivity implements Validator.Validation
     private UserService mUserService;
     private Validator mValidator;
     private CallbackManager mCallbackManager;
+    private boolean isFacebookSignUp = false;
 
     public static Intent createIntent(Context context) {
         return new Intent(context, SignUpActivity.class);
@@ -123,6 +126,7 @@ public class SignUpActivity extends BaseActivity implements Validator.Validation
 
     @OnClick(R.id.signup_with_facebook)
     public void onClickSignUpFacebook(View v) {
+        isFacebookSignUp = true;
         LoginManager.getInstance()
                 .logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
     }
@@ -222,13 +226,11 @@ public class SignUpActivity extends BaseActivity implements Validator.Validation
             public void onResponse(Call<Void> call, Response<Void> response) {
                 switch (response.code()) {
                     case HttpURLConnection.HTTP_CREATED:
-                        Bundle bundle = new Bundle();
-                        bundle.putString(AuthenticatorActivity.PARAM_USER_NAME, mEmail.getText().toString());
-                        bundle.putString(AuthenticatorActivity.PARAM_USER_PASS, mPassword.getText().toString());
-                        Intent intent = new Intent();
-                        intent.putExtras(bundle);
-                        setResult(RESULT_OK, intent);
-                        finish();
+                        if (isFacebookSignUp) {
+                            facebookBind();
+                        } else {
+                            loginUser();
+                        }
                         break;
                     case HttpURLConnection.HTTP_BAD_REQUEST:
                         Snackbar.make(mName, R.string.status_400, Snackbar.LENGTH_LONG).show();
@@ -243,5 +245,42 @@ public class SignUpActivity extends BaseActivity implements Validator.Validation
                 Log.e("dragonfly", t.getMessage(), t);
             }
         });
+    }
+
+    private void facebookBind() {
+        FacebookRestService facebookService = OAuth2ServiceFactory.createService(FacebookRestService.class, this);
+        facebookService.bind(new UserFacebookAccountVO(AccessToken.getCurrentAccessToken().getToken()))
+                .enqueue(new Callback<Void>() {
+                             @Override
+                             public void onResponse(Call<Void> call, Response<Void> response) {
+                                 switch (response.code()) {
+                                     case HttpURLConnection.HTTP_OK:
+                                         loginUser();
+                                         break;
+                                     case HttpURLConnection.HTTP_BAD_REQUEST:
+                                         Snackbar.make(mName, R.string.status_400, Snackbar.LENGTH_LONG).show();
+                                     default:
+                                         Snackbar.make(mName, R.string.status_500, Snackbar.LENGTH_LONG).show();
+                                 }
+                             }
+
+                             @Override
+                             public void onFailure(Call<Void> call, Throwable t) {
+                                 Snackbar.make(mName, R.string.status_500, Snackbar.LENGTH_LONG).show();
+                                 Log.e("dragonfly", t.getMessage(), t);
+                             }
+                         }
+
+                );
+    }
+
+    private void loginUser() {
+        Bundle bundle = new Bundle();
+        bundle.putString(AuthenticatorActivity.PARAM_USER_NAME, mEmail.getText().toString());
+        bundle.putString(AuthenticatorActivity.PARAM_USER_PASS, mPassword.getText().toString());
+        Intent intent = new Intent();
+        intent.putExtras(bundle);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }
