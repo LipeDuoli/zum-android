@@ -20,11 +20,50 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.hotmart.dragonfly.R;
+
+import com.hotmart.dragonfly.rest.model.response.AddressResponseVO;
+import com.hotmart.dragonfly.rest.model.response.PageableList;
+import com.hotmart.dragonfly.rest.model.response.VerificationResponseVO;
+
+import com.hotmart.dragonfly.rest.service.ApiServiceFactory;
+import com.hotmart.dragonfly.rest.service.CheckLogService;
 import com.hotmart.dragonfly.ui.BaseActivity;
+import com.hotmart.dragonfly.ui.DividerItemDecoration;
+import com.hotmart.dragonfly.ui.PageableLoader;
+
+
+import java.util.LinkedHashSet;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CheckLogActivity extends BaseActivity {
+
+    private static final int ROWS = 20;
+
+    public static final int LOADER_PLACES_ID = 0;
+
+    @BindView(R.id.list_history)
+    RecyclerView mListHistory;
+    @BindView(R.id.progress_loading)
+    LinearLayout mProgressLoading;
+    @BindView(R.id.error_request)
+    LinearLayout mErrorRequest;
+
+    private CheckLogAdapter mCheckLogAdapter;
+    private CheckLogService mCheckLogService;
 
     public static Intent createIntent(Context context) {
         return new Intent(context, CheckLogActivity.class);
@@ -39,5 +78,50 @@ public class CheckLogActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.check_log_activity);
+
+        mListHistory.setHasFixedSize(true);
+        mListHistory.setLayoutManager(new LinearLayoutManager(this));
+        mListHistory.addItemDecoration(new DividerItemDecoration(this, R.drawable.divider));
+        mCheckLogAdapter = new CheckLogAdapter(this, new LinkedHashSet<VerificationResponseVO>());
+        mListHistory.setAdapter(mCheckLogAdapter);
+
+        getVerification();
     }
+
+    private void getVerification() {
+        mCheckLogService = ApiServiceFactory.createService(CheckLogService.class, this);
+
+        mCheckLogService.get().enqueue(new Callback<PageableList<VerificationResponseVO>>() {
+            @Override
+            public void onResponse(Call<PageableList<VerificationResponseVO>> call, Response<PageableList<VerificationResponseVO>> response) {
+                if(response.isSuccessful()){
+                    mProgressLoading.setVisibility(View.GONE);
+                    mListHistory.setVisibility(View.VISIBLE);
+                    mCheckLogAdapter.addAll(response.body().getData());
+                } else {
+                    showError();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PageableList<VerificationResponseVO>> call, Throwable t) {
+                showError();
+            }
+        });
+    }
+
+    private void showError() {
+        mProgressLoading.setVisibility(View.GONE);
+        mListHistory.setVisibility(View.GONE);
+        mErrorRequest.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.try_again)
+    public void onClickTryAgain(View v) {
+        mProgressLoading.setVisibility(View.VISIBLE);
+        mListHistory.setVisibility(View.GONE);
+        mErrorRequest.setVisibility(View.GONE);
+        getVerification();
+    }
+
 }
