@@ -17,6 +17,9 @@
 
     <dimen name="nav_menu_vertical_margin">0dp</dimen>
 
+    <!-- SignUp -->
+    <dimen name="avatar_dimention">124dp</dimen>
+
     <!-- Places Activity -->
     <dimen name="places_activity_backdrop_pin_image_size">38dp</dimen>
     <dimen name="places_activity_image_list_item_size">55dp</dimen>

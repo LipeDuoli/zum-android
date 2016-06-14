@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.hotmart.dragonfly"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.hotmart.dragonfly">
 
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
@@ -16,6 +16,7 @@
         android:required="true"/>
 
     <application
+        android:name=".DragonFlyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -29,8 +30,8 @@
         <activity
             android:name=".tutorial.ui.TutorialActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.DragonFly.Base"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.DragonFly.Base"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,8 +43,8 @@
         <activity
             android:name=".home.ui.HomeActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.DragonFly.HomeActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.DragonFly.HomeActivity"
             android:windowSoftInputMode="stateHidden">
         </activity>
         <activity
@@ -126,12 +127,12 @@
         </service>
 
         <activity android:name=".authenticator.ui.EditUserActivity"
-                  android:windowSoftInputMode="stateHidden"
-                android:parentActivityName=".home.ui.HomeActivity">
+            android:parentActivityName=".home.ui.HomeActivity"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".authenticator.ui.EditPasswordActivty"
-                  android:windowSoftInputMode="stateHidden"
-                  android:parentActivityName=".authenticator.ui.EditPasswordActivty">
+            android:parentActivityName=".authenticator.ui.EditPasswordActivty"
+            android:windowSoftInputMode="stateHidden">
         </activity>
 
         <activity
@@ -154,8 +155,8 @@
 
         <activity android:name="com.facebook.FacebookActivity"
                   android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
-                  android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <activity
             android:name=".places.ui.MyAddressActivity"
@@ -176,8 +177,8 @@
         <activity
             android:name=".check.ui.ShareChecklistActivity"
             android:label="@string/title_activity_share_checklist"
-            android:theme="@style/Theme.DragonFly"
             android:parentActivityName=".places.ui.MyAddressActivity"
+            android:theme="@style/Theme.DragonFly"
             android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
