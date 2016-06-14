@@ -20,8 +20,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -29,7 +27,6 @@ import android.widget.LinearLayout;
 
 import com.hotmart.dragonfly.R;
 
-import com.hotmart.dragonfly.rest.model.response.AddressResponseVO;
 import com.hotmart.dragonfly.rest.model.response.PageableList;
 import com.hotmart.dragonfly.rest.model.response.VerificationResponseVO;
 
@@ -37,11 +34,8 @@ import com.hotmart.dragonfly.rest.service.ApiServiceFactory;
 import com.hotmart.dragonfly.rest.service.CheckLogService;
 import com.hotmart.dragonfly.ui.BaseActivity;
 import com.hotmart.dragonfly.ui.DividerItemDecoration;
-import com.hotmart.dragonfly.ui.PageableLoader;
-
 
 import java.util.LinkedHashSet;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -50,10 +44,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CheckLogActivity extends BaseActivity {
-
-    private static final int ROWS = 20;
-
-    public static final int LOADER_PLACES_ID = 0;
 
     @BindView(R.id.list_history)
     RecyclerView mListHistory;
