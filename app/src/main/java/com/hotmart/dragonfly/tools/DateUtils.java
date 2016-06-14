@@ -22,7 +22,7 @@ import java.util.Date;
 public class DateUtils {
     public static String formatDate(long dateInMilis) {
         Date date = new Date(dateInMilis);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy hh:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy • hh:mm");
         return sdf.format(date);
     }
 }

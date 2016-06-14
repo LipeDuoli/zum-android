@@ -16,6 +16,7 @@
  */
 package com.hotmart.dragonfly.rest.service;
 
+import com.hotmart.dragonfly.rest.model.response.PageableList;
 import com.hotmart.dragonfly.rest.model.response.VerificationResponseVO;
 
 import java.util.List;
@@ -23,9 +24,10 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
-public interface VerficationService {
+public interface CheckLogService {
+
     String PATH = "v1/verification";
 
     @GET(PATH)
-    Call<List<VerificationResponseVO>> get();
+    Call<PageableList<VerificationResponseVO>> get();
 }
