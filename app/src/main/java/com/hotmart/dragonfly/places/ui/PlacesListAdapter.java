@@ -18,6 +18,7 @@ package com.hotmart.dragonfly.places.ui;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
@@ -118,7 +119,7 @@ public class PlacesListAdapter extends CollectionRecyclerViewAdapter<PlacesListA
         public boolean onMenuItemClick(MenuItem item) {
             switch(item.getItemId()){
                 case R.id.place_edit:
-                    Snackbar.make(itemView, R.string.not_implemented, Snackbar.LENGTH_LONG).show();
+                    openPlaceEdit(getObject(getAdapterPosition()));
                     break;
                 case R.id.place_delete:
                         new AlertDialog.Builder(itemView.getContext())
@@ -150,6 +151,12 @@ public class PlacesListAdapter extends CollectionRecyclerViewAdapter<PlacesListA
                         break;
             }
             return true;
+        }
+
+        private void openPlaceEdit(AddressResponseVO addressResponseVO) {
+            Intent intent = new Intent(mContext, PlaceEditActivity.class);
+            intent.putExtra(PlaceEditActivity.EXTRA_ADDRESS, addressResponseVO);
+            mContext.startActivity(intent);
         }
     }
 }
