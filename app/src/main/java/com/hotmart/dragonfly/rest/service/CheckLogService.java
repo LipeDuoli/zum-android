@@ -14,15 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with Zum. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.hotmart.dragonfly.tools;
+package com.hotmart.dragonfly.rest.service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.hotmart.dragonfly.rest.model.response.PageableList;
+import com.hotmart.dragonfly.rest.model.response.VerificationResponseVO;
 
-public class DateUtils {
-    public static String formatDate(long dateInMilis) {
-        Date date = new Date(dateInMilis);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy • hh:mm");
-        return sdf.format(date);
-    }
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
+
+public interface CheckLogService {
+
+    String PATH = "v1/verification";
+
+    @GET(PATH)
+    Call<PageableList<VerificationResponseVO>> get();
 }

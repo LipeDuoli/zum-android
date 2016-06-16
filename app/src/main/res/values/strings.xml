@@ -47,6 +47,7 @@
     <string name="current_password">Senha Atual</string>
     <string name="new_password">Nova senha</string>
     <string name="next">Próximo</string>
+    <string name="facebook_cancel">Login cancelado</string>
 
     <!-- RedefinePassActivity -->
     <string name="redefinir_senha_enviar">Enviar</string>
@@ -85,6 +86,8 @@
     <string name="pleaseWait">Por favor</string>
     <string name="webpage_being_loaded">Aguarde</string>
     <string name="about_title_logo">HOTMART • 07/05/2016</string>
+    <string name="tente_novamente">Tente Novamente</string>
+    <string name="algo_deu_errado">Ops! Algo deu errado</string>
 
     <!-- Dialogs -->
     <string name="dialog_title_warning">Atenção!</string>
@@ -117,4 +120,5 @@
     <string name="share"><b>Compartilhar</b></string>
     <string name="shareTitle">Verificação Concluída</string>
     <string name="text_share">Eu já fiz a minha parte contra o Aedes aegypti! Faça também a sua! - https://www.hotmart.com/hackathon</string>
+
 </resources>
