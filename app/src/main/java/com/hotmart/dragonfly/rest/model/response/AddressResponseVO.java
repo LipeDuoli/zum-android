@@ -59,6 +59,18 @@ public class AddressResponseVO implements Parcelable {
 	@SerializedName("country")
 	private String mCountry;
 
+	public static final Creator<AddressResponseVO> CREATOR = new Creator<AddressResponseVO>() {
+		@Override
+		public AddressResponseVO createFromParcel(Parcel in) {
+			return new AddressResponseVO(in);
+		}
+
+		@Override
+		public AddressResponseVO[] newArray(int size) {
+			return new AddressResponseVO[size];
+		}
+	};
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
