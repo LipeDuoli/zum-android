@@ -29,6 +29,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.hotmart.dragonfly.R;
 import com.hotmart.dragonfly.rest.model.response.AddressChecklistItemResponseVO;
+import com.hotmart.dragonfly.rest.model.response.ChecklistItemResponseVO;
 import com.hotmart.dragonfly.ui.CollectionRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -39,18 +40,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 
-public class CheckListAdapter extends CollectionRecyclerViewAdapter<CheckListAdapter.ViewHolder, AddressChecklistItemResponseVO> {
+public class CheckListAdapter extends CollectionRecyclerViewAdapter<CheckListAdapter.ViewHolder, ChecklistItemResponseVO> {
 
     private Context mContext;
 
     public CheckListAdapter(Context context,
-            Collection<AddressChecklistItemResponseVO> dataset) {
+            Collection<ChecklistItemResponseVO> dataset) {
         super(context, dataset);
         mContext = context;
     }
 
     @Override
-    protected void onBindViewHolder(ViewHolder holder, int position, AddressChecklistItemResponseVO object) {
+    protected void onBindViewHolder(ViewHolder holder, int position, ChecklistItemResponseVO object) {
 
         String label = object.getName().substring(0, 1);
 
@@ -58,7 +59,7 @@ public class CheckListAdapter extends CollectionRecyclerViewAdapter<CheckListAda
             holder.showHeader(label);
         }
         else {
-            AddressChecklistItemResponseVO lastItem = getObject(position - 1);
+            ChecklistItemResponseVO lastItem = getObject(position - 1);
 
             if (label.equalsIgnoreCase(lastItem.getName().substring(0, 1))) {
                 holder.hideHeader();
@@ -80,7 +81,7 @@ public class CheckListAdapter extends CollectionRecyclerViewAdapter<CheckListAda
     public List<Long> getCheckedItems() {
         List<Long> idItems = new ArrayList<>();
 
-        for (AddressChecklistItemResponseVO item : getDatasetAsArrayList()){
+        for (ChecklistItemResponseVO item : getDatasetAsArrayList()){
             if(item.isCheck()){
                 idItems.add(item.getId());
             }
@@ -117,7 +118,7 @@ public class CheckListAdapter extends CollectionRecyclerViewAdapter<CheckListAda
 
         @OnCheckedChanged(R.id.checkbox_item)
         void checkItem(AppCompatCheckBox checkBox){
-            AddressChecklistItemResponseVO item = (AddressChecklistItemResponseVO) checkBox.getTag();
+            ChecklistItemResponseVO item = (ChecklistItemResponseVO) checkBox.getTag();
             item.setCheck(checkBox.isChecked());
         }
 
@@ -125,7 +126,7 @@ public class CheckListAdapter extends CollectionRecyclerViewAdapter<CheckListAda
             header_linearlayout.setVisibility(View.GONE);
         }
 
-        void setModel(AddressChecklistItemResponseVO model) {
+        void setModel(ChecklistItemResponseVO model) {
             resetViews();
             textView_name.setText(model.getName());
             checkbox_item.setTag(model);
