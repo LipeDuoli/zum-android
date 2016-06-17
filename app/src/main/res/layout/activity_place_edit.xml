@@ -15,6 +15,55 @@
        android:layout_height="match_parent"
        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+       <LinearLayout
+           android:id="@+id/header_place"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:padding="16dp">
+
+           <android.support.v7.widget.AppCompatTextView
+               android:id="@+id/place_label"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:textSize="15sp"
+               android:textStyle="bold"
+               android:textColor="@color/sea"
+               android:layout_marginBottom="1dp"/>
+
+           <View
+               android:layout_width="match_parent"
+               android:layout_height="1dp"
+               android:background="@color/white_three"
+               android:layout_marginBottom="6dp"/>
+
+           <android.support.v7.widget.AppCompatTextView
+               android:id="@+id/place_address"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:textSize="13sp"
+               android:textColor="@color/gray"/>
+       </LinearLayout>
+
+       <android.support.v7.widget.RecyclerView
+           android:id="@+id/list_checklist"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_below="@id/header_place"/>
+
+       <android.support.v4.widget.ContentLoadingProgressBar
+           android:id="@+id/progress_bar"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:indeterminate="true"
+           android:layout_centerInParent="true"
+           style="@style/Widget.AppCompat.ProgressBar" />
+
+       <include
+           android:id="@+id/error_request"
+           layout="@layout/error_view"
+           android:visibility="gone"/>
+
    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

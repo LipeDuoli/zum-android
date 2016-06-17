@@ -120,5 +120,6 @@
     <string name="share"><b>Compartilhar</b></string>
     <string name="shareTitle">Verificação Concluída</string>
     <string name="text_share">Eu já fiz a minha parte contra o Aedes aegypti! Faça também a sua! - https://www.hotmart.com/hackathon</string>
+    <string name="action_search">Pesquisar</string>
 
 </resources>

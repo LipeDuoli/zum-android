@@ -18,31 +18,125 @@ package com.hotmart.dragonfly.places.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.hotmart.dragonfly.R;
+import com.hotmart.dragonfly.rest.model.response.AddressDetailResponseVO;
 import com.hotmart.dragonfly.rest.model.response.AddressResponseVO;
+import com.hotmart.dragonfly.rest.model.response.ChecklistItemResponseVO;
+import com.hotmart.dragonfly.rest.service.AddressService;
+import com.hotmart.dragonfly.rest.service.ApiServiceFactory;
+import com.hotmart.dragonfly.tools.LogUtils;
 import com.hotmart.dragonfly.ui.BaseActivity;
 
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 /**
- * Created by felip on 6/16/2016.
+ * Created by felipe.arimateia on 6/16/2016.
  */
 
-public class PlaceEditActivity extends BaseActivity {
+public class PlaceEditActivity extends BaseActivity implements SearchView.OnQueryTextListener, SearchView.OnCloseListener {
+
+    private static final String TAG = LogUtils.makeLogTag(PlaceEditActivity.class);
 
     public static final String EXTRA_ADDRESS = "extra_address";
-    private AddressResponseVO address;
+
+    @BindView(R.id.place_label)
+    AppCompatTextView placeLabel;
+
+    @BindView(R.id.place_address)
+    AppCompatTextView placeAddress;
+
+    @BindView(R.id.list_checklist)
+    RecyclerView listChecklist;
+
+    @BindView(R.id.progress_bar)
+    ContentLoadingProgressBar progressBar;
+
+    @BindView(R.id.header_place)
+    LinearLayout headerPlace;
+
+    @BindView(R.id.error_request)
+    LinearLayout errorRequest;
+
+    private AddressService mAddressService;
+    private Call<AddressDetailResponseVO> mCallAddress;
+
+    private Long mIdAddress;
+    private AddressDetailResponseVO mAddress;
+    private CheckListItemsAdapter mAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_edit);
 
-        address = getIntent().getParcelableExtra(EXTRA_ADDRESS);
+        AddressResponseVO address = getIntent().getParcelableExtra(EXTRA_ADDRESS);
+        mIdAddress = address.getId();
 
         setTitle(address.getLabel());
 
         setUpToolbar();
+
+        placeLabel.setText(address.getLabel());
+        placeAddress.setText(address.getFormattedAddress());
+
+        mAdapter = new CheckListItemsAdapter(this, new ArrayList<ChecklistItemResponseVO>());
+
+        LinearLayoutManager manager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false);
+        listChecklist.setLayoutManager(manager);
+        listChecklist.setAdapter(mAdapter);
+
+        getAddressDetail(mIdAddress);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_place_edit, menu);
+
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        searchView.setOnQueryTextListener(this);
+        searchView.setOnCloseListener(this);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (mCallAddress != null && !mCallAddress.isExecuted()) {
+            mCallAddress.cancel();
+        }
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
+
+    @Override
+    public boolean onClose() {
+        return false;
     }
 
     private void setUpToolbar() {
@@ -50,4 +144,39 @@ public class PlaceEditActivity extends BaseActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
     }
+
+    private void getAddressDetail(Long id) {
+
+        mAddressService = ApiServiceFactory.createService(AddressService.class, this);
+        mCallAddress = mAddressService.get(id);
+        mCallAddress.enqueue(new Callback<AddressDetailResponseVO>() {
+            @Override
+            public void onResponse(Call<AddressDetailResponseVO> call,
+                                   Response<AddressDetailResponseVO> response) {
+
+                if (response.isSuccessful()) {
+                    mAddress = response.body();
+                    mAdapter.addAll(mAddress.getChecklistItems());
+                    progressBar.hide();
+                } else {
+                    LogUtils.LOGD(TAG, "Status Code: " + response.code());
+                    showError();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddressDetailResponseVO> call, Throwable t) {
+                LogUtils.LOGE(TAG, t.getMessage(), t);
+                showError();
+            }
+        });
+    }
+
+    private void showError() {
+        progressBar.hide();
+        headerPlace.setVisibility(View.INVISIBLE);
+        errorRequest.setVisibility(View.VISIBLE);
+    }
+
+
 }
