@@ -49,7 +49,26 @@
            android:id="@+id/list_checklist"
            android:layout_width="match_parent"
            android:layout_height="match_parent"
-           android:layout_below="@id/header_place"/>
+           android:layout_below="@id/header_place"
+           android:layout_above="@+id/buttonLayout"/>
+
+
+       <FrameLayout
+           android:id="@+id/buttonLayout"
+           android:layout_width="match_parent"
+           android:layout_height="60dp"
+           android:background="@color/light_gray"
+           android:layout_alignParentBottom="true"
+           android:padding="16dp">
+           <Button
+               android:id="@+id/btn_save"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="@string/save"
+               android:background="@drawable/btn_primary"
+               android:textColor="@color/white" />
+
+       </FrameLayout>
 
        <android.support.v4.widget.ContentLoadingProgressBar
            android:id="@+id/progress_bar"

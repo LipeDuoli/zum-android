@@ -25,11 +25,14 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.hotmart.dragonfly.R;
+import com.hotmart.dragonfly.rest.model.request.AddressUpdateRequestVO;
 import com.hotmart.dragonfly.rest.model.response.AddressDetailResponseVO;
 import com.hotmart.dragonfly.rest.model.response.AddressResponseVO;
 import com.hotmart.dragonfly.rest.model.response.ChecklistItemResponseVO;
@@ -39,8 +42,10 @@ import com.hotmart.dragonfly.tools.LogUtils;
 import com.hotmart.dragonfly.ui.BaseActivity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -137,6 +142,53 @@ public class PlaceEditActivity extends BaseActivity implements SearchView.OnQuer
     @Override
     public boolean onClose() {
         return false;
+    }
+    @OnClick(R.id.btn_save)
+    public void onClickSave() {
+
+        if (mAddress == null) {
+            return;
+        }
+
+        progressBar.show();
+
+        AddressUpdateRequestVO requestVO = new AddressUpdateRequestVO();
+        requestVO.setLabel(mAddress.getLabel());
+        requestVO.setAvailableItems(new HashSet<Long>());
+
+        for (ChecklistItemResponseVO item : mAddress.getChecklistItems()) {
+            if (item.isAvailable()) {
+                requestVO.getAvailableItems().add(item.getId());
+            }
+        }
+        mAddressService.put(mIdAddress, requestVO).enqueue(new Callback<AddressResponseVO>() {
+            @Override
+            public void onResponse(Call<AddressResponseVO> call, Response<AddressResponseVO> response) {
+
+                progressBar.hide();
+
+                int message =  R.string.msg_success_save_address;
+
+                if (response.isSuccessful()) {
+
+                    finish();
+                }
+                else {
+                  message =  R.string.msg_erro_save_address;
+                }
+
+                Toast.makeText(PlaceEditActivity.this, message, Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+            @Override
+            public void onFailure(Call<AddressResponseVO> call, Throwable t) {
+                Log.e(TAG, t.getMessage(), t);
+
+                Toast.makeText(PlaceEditActivity.this, R.string.msg_erro_save_address, Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
     }
 
     private void setUpToolbar() {
