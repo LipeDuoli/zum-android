@@ -184,5 +184,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".places.ui.MyAddressActivity" />
         </activity>
+
+        <activity
+            android:name=".places.ui.PlaceEditActivity"
+            android:label="@string/my_places"
+            android:parentActivityName=".places.ui.PlacesActivity"
+            android:theme="@style/Theme.DragonFly.PlacesActivity"
+            android:windowSoftInputMode="stateHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".places.ui.PlacesActivity" />
+        </activity>
     </application>
 </manifest>

@@ -27,38 +27,43 @@ import java.util.List;
 public class AddressDetailResponseVO extends AddressResponseVO implements Parcelable{
 
 	@SerializedName("checklistItems")
-	private List<AddressChecklistItemResponseVO> mChecklistItems;
+	private  List<ChecklistItemResponseVO> checklistItems;
 
-	public List<AddressChecklistItemResponseVO> getChecklistItems() {
-		return mChecklistItems;
+	public List<ChecklistItemResponseVO> getChecklistItems() {
+		return checklistItems;
 	}
 
-	public void setChecklistItems(List<AddressChecklistItemResponseVO> checklistItems) {
-		this.mChecklistItems = checklistItems;
-	}
-
-	@Override
-	public int describeContents() { return 0; }
-
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		super.writeToParcel(dest, flags);
-		dest.writeList(this.mChecklistItems);
+	public void setChecklistItems(List<ChecklistItemResponseVO> checklistItems) {
+		this.checklistItems = checklistItems;
 	}
 
 	public AddressDetailResponseVO() {}
 
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		super.writeToParcel(dest, flags);
+		dest.writeTypedList(this.checklistItems);
+	}
+
 	protected AddressDetailResponseVO(Parcel in) {
 		super(in);
-		this.mChecklistItems = new ArrayList<AddressChecklistItemResponseVO>();
-		in.readList(this.mChecklistItems, AddressChecklistItemResponseVO.class.getClassLoader());
+		this.checklistItems = in.createTypedArrayList(ChecklistItemResponseVO.CREATOR);
 	}
 
 	public static final Creator<AddressDetailResponseVO> CREATOR = new Creator<AddressDetailResponseVO>() {
 		@Override
-		public AddressDetailResponseVO createFromParcel(Parcel source) {return new AddressDetailResponseVO(source);}
+		public AddressDetailResponseVO createFromParcel(Parcel source) {
+			return new AddressDetailResponseVO(source);
+		}
 
 		@Override
-		public AddressDetailResponseVO[] newArray(int size) {return new AddressDetailResponseVO[size];}
+		public AddressDetailResponseVO[] newArray(int size) {
+			return new AddressDetailResponseVO[size];
+		}
 	};
 }

@@ -36,6 +36,7 @@ import com.hotmart.dragonfly.rest.model.request.VerificationRequestVO;
 import com.hotmart.dragonfly.rest.model.response.AddressChecklistItemResponseVO;
 import com.hotmart.dragonfly.rest.model.response.AddressDetailResponseVO;
 import com.hotmart.dragonfly.rest.model.response.CheckLastVO;
+import com.hotmart.dragonfly.rest.model.response.ChecklistItemResponseVO;
 import com.hotmart.dragonfly.rest.service.ApiServiceFactory;
 import com.hotmart.dragonfly.rest.service.VerificationService;
 import com.hotmart.dragonfly.ui.AddressDetailLoader;
@@ -96,7 +97,7 @@ public class CheckListActivity extends BaseActivity implements LoaderManager.Loa
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         idAddress = getIntent().getLongExtra("id", -1);
-        List<AddressChecklistItemResponseVO> list = new ArrayList<>();
+        List<ChecklistItemResponseVO> list = new ArrayList<>();
 
         checkListAdapter = new CheckListAdapter(this, list);
         setTitle("");
@@ -130,10 +131,10 @@ public class CheckListActivity extends BaseActivity implements LoaderManager.Loa
     public void onLoadFinished(Loader<AddressDetailResponseVO> loader, AddressDetailResponseVO data) {
         mAvloadingIndicatorView.setVisibility(View.GONE);
         if (data != null) {
-            List<AddressChecklistItemResponseVO> list = data.getChecklistItems();
-            List<AddressChecklistItemResponseVO> listTemp = new ArrayList<>();
+            List<ChecklistItemResponseVO> list = data.getChecklistItems();
+            List<ChecklistItemResponseVO> listTemp = new ArrayList<>();
 
-            for (AddressChecklistItemResponseVO item : list) {
+            for (ChecklistItemResponseVO item : list) {
                 if (item.isAvailable()) {
                     listTemp.add(item);
                 }

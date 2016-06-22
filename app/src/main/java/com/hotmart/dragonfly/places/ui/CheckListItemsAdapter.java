@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Zum. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.hotmart.dragonfly.check.ui;
+package com.hotmart.dragonfly.places.ui;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatCheckBox;
@@ -28,7 +28,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.hotmart.dragonfly.R;
-import com.hotmart.dragonfly.rest.model.response.AddressChecklistItemResponseVO;
 import com.hotmart.dragonfly.rest.model.response.ChecklistItemResponseVO;
 import com.hotmart.dragonfly.ui.CollectionRecyclerViewAdapter;
 
@@ -40,12 +39,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 
-public class CheckListAdapter extends CollectionRecyclerViewAdapter<CheckListAdapter.ViewHolder, ChecklistItemResponseVO> {
+public class CheckListItemsAdapter extends CollectionRecyclerViewAdapter<CheckListItemsAdapter.ViewHolder, ChecklistItemResponseVO> {
 
     private Context mContext;
 
-    public CheckListAdapter(Context context,
-            Collection<ChecklistItemResponseVO> dataset) {
+    public CheckListItemsAdapter(Context context,
+                                 Collection<ChecklistItemResponseVO> dataset) {
         super(context, dataset);
         mContext = context;
     }
@@ -78,17 +77,6 @@ public class CheckListAdapter extends CollectionRecyclerViewAdapter<CheckListAda
         return viewHolder;
     }
 
-    public List<Long> getCheckedItems() {
-        List<Long> idItems = new ArrayList<>();
-
-        for (ChecklistItemResponseVO item : getDatasetAsArrayList()){
-            if(item.isCheck()){
-                idItems.add(item.getId());
-            }
-        }
-        return idItems;
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.header_linearlayout)
@@ -117,9 +105,9 @@ public class CheckListAdapter extends CollectionRecyclerViewAdapter<CheckListAda
         }
 
         @OnCheckedChanged(R.id.checkbox_item)
-        void checkItem(AppCompatCheckBox checkBox){
+        void availableItem(AppCompatCheckBox checkBox){
             ChecklistItemResponseVO item = (ChecklistItemResponseVO) checkBox.getTag();
-            item.setCheck(checkBox.isChecked());
+            item.setAvailable(checkBox.isChecked());
         }
 
         void hideHeader(){
@@ -130,7 +118,7 @@ public class CheckListAdapter extends CollectionRecyclerViewAdapter<CheckListAda
             resetViews();
             textView_name.setText(model.getName());
             checkbox_item.setTag(model);
-            checkbox_item.setChecked(model.isCheck());
+            checkbox_item.setChecked(model.isAvailable());
             Glide.with(mContext).load(model.getImageUrl()).placeholder(R.drawable.placeholder)
                  .error(R.drawable.placeholder).into(image);
         }

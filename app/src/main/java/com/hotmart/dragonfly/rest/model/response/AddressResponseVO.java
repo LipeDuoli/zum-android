@@ -21,6 +21,9 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AddressResponseVO implements Parcelable {
 
 	@SerializedName("id")
@@ -74,25 +77,6 @@ public class AddressResponseVO implements Parcelable {
 		return getId().hashCode();
 	}
 
-	@Override
-	public int describeContents() { return 0; }
-
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeValue(this.mId);
-		dest.writeString(this.mLabel);
-		dest.writeValue(this.mLatitude);
-		dest.writeValue(this.mLongitude);
-		dest.writeString(this.mCity);
-		dest.writeString(this.mZipCode);
-		dest.writeString(this.mState);
-		dest.writeString(this.mComplement);
-		dest.writeString(this.mAddress);
-		dest.writeString(this.mNeighborhood);
-		dest.writeString(this.mNumber);
-		dest.writeString(this.mCountry);
-	}
-
 	public AddressResponseVO() {}
 
     public AddressResponseVO(Long id, String label, String address) {
@@ -100,21 +84,6 @@ public class AddressResponseVO implements Parcelable {
         mLabel = label;
         mAddress = address;
     }
-
-	protected AddressResponseVO(Parcel in) {
-		this.mId = (Long) in.readValue(Long.class.getClassLoader());
-		this.mLabel = in.readString();
-		this.mLatitude = (Double) in.readValue(Double.class.getClassLoader());
-		this.mLongitude = (Double) in.readValue(Double.class.getClassLoader());
-		this.mCity = in.readString();
-		this.mZipCode = in.readString();
-		this.mState = in.readString();
-		this.mComplement = in.readString();
-		this.mAddress = in.readString();
-		this.mNeighborhood = in.readString();
-		this.mNumber = in.readString();
-		this.mCountry = in.readString();
-	}
 
 	public Long getId() {
 		return mId;
@@ -228,4 +197,52 @@ public class AddressResponseVO implements Parcelable {
 
 		return addr.toString();
 	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeValue(this.mId);
+		dest.writeString(this.mLabel);
+		dest.writeValue(this.mLatitude);
+		dest.writeValue(this.mLongitude);
+		dest.writeString(this.mCity);
+		dest.writeString(this.mZipCode);
+		dest.writeString(this.mState);
+		dest.writeString(this.mComplement);
+		dest.writeString(this.mAddress);
+		dest.writeString(this.mNeighborhood);
+		dest.writeString(this.mNumber);
+		dest.writeString(this.mCountry);
+	}
+
+	protected AddressResponseVO(Parcel in) {
+		this.mId = (Long) in.readValue(Long.class.getClassLoader());
+		this.mLabel = in.readString();
+		this.mLatitude = (Double) in.readValue(Double.class.getClassLoader());
+		this.mLongitude = (Double) in.readValue(Double.class.getClassLoader());
+		this.mCity = in.readString();
+		this.mZipCode = in.readString();
+		this.mState = in.readString();
+		this.mComplement = in.readString();
+		this.mAddress = in.readString();
+		this.mNeighborhood = in.readString();
+		this.mNumber = in.readString();
+		this.mCountry = in.readString();
+	}
+
+	public static final Creator<AddressResponseVO> CREATOR = new Creator<AddressResponseVO>() {
+		@Override
+		public AddressResponseVO createFromParcel(Parcel source) {
+			return new AddressResponseVO(source);
+		}
+
+		@Override
+		public AddressResponseVO[] newArray(int size) {
+			return new AddressResponseVO[size];
+		}
+	};
 }

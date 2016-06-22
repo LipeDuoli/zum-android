@@ -16,9 +16,12 @@
  */
 package com.hotmart.dragonfly.rest.model.response;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class ChecklistItemResponseVO {
+public class ChecklistItemResponseVO implements Parcelable {
 
 	@SerializedName("id")
 	private Long mId;
@@ -31,6 +34,11 @@ public class ChecklistItemResponseVO {
 
 	@SerializedName("imageUrl")
 	private String imageUrl;
+
+	@SerializedName("available")
+	private boolean available;
+
+	private transient boolean check;
 
 	public String getImageUrl() {
 		return imageUrl;
@@ -64,4 +72,56 @@ public class ChecklistItemResponseVO {
 		this.mDescription = description;
 	}
 
+	public boolean isAvailable() {
+		return available;
+	}
+
+	public void setAvailable(boolean available) {
+		this.available = available;
+	}
+
+	public boolean isCheck() {
+		return check;
+	}
+
+	public void setCheck(boolean check) {
+		this.check = check;
+	}
+
+	public ChecklistItemResponseVO() {
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeValue(this.mId);
+		dest.writeString(this.mName);
+		dest.writeString(this.mDescription);
+		dest.writeString(this.imageUrl);
+		dest.writeByte(this.available ? (byte) 1 : (byte) 0);
+	}
+
+	protected ChecklistItemResponseVO(Parcel in) {
+		this.mId = (Long) in.readValue(Long.class.getClassLoader());
+		this.mName = in.readString();
+		this.mDescription = in.readString();
+		this.imageUrl = in.readString();
+		this.available = in.readByte() != 0;
+	}
+
+	public static final Creator<ChecklistItemResponseVO> CREATOR = new Creator<ChecklistItemResponseVO>() {
+		@Override
+		public ChecklistItemResponseVO createFromParcel(Parcel source) {
+			return new ChecklistItemResponseVO(source);
+		}
+
+		@Override
+		public ChecklistItemResponseVO[] newArray(int size) {
+			return new ChecklistItemResponseVO[size];
+		}
+	};
 }

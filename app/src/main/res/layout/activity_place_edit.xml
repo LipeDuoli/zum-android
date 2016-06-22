@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".places.ui.PlaceEditActivity">
+
+    <include
+        layout="@layout/app_default_appbar"/>
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+       <LinearLayout
+           android:id="@+id/header_place"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:padding="16dp">
+
+           <android.support.v7.widget.AppCompatTextView
+               android:id="@+id/place_label"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:textSize="15sp"
+               android:textStyle="bold"
+               android:textColor="@color/sea"
+               android:layout_marginBottom="1dp"/>
+
+           <View
+               android:layout_width="match_parent"
+               android:layout_height="1dp"
+               android:background="@color/white_three"
+               android:layout_marginBottom="6dp"/>
+
+           <android.support.v7.widget.AppCompatTextView
+               android:id="@+id/place_address"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:textSize="13sp"
+               android:textColor="@color/gray"/>
+       </LinearLayout>
+
+       <android.support.v7.widget.RecyclerView
+           android:id="@+id/list_checklist"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_below="@id/header_place"
+           android:layout_above="@+id/buttonLayout"/>
+
+
+       <FrameLayout
+           android:id="@+id/buttonLayout"
+           android:layout_width="match_parent"
+           android:layout_height="60dp"
+           android:background="@color/light_gray"
+           android:layout_alignParentBottom="true"
+           android:padding="16dp">
+           <Button
+               android:id="@+id/btn_save"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="@string/save"
+               android:background="@drawable/btn_primary"
+               android:textColor="@color/white" />
+
+       </FrameLayout>
+
+       <android.support.v4.widget.ContentLoadingProgressBar
+           android:id="@+id/progress_bar"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:indeterminate="true"
+           android:layout_centerInParent="true"
+           style="@style/Widget.AppCompat.ProgressBar" />
+
+       <include
+           android:id="@+id/error_request"
+           layout="@layout/error_view"
+           android:visibility="gone"/>
+
+   </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

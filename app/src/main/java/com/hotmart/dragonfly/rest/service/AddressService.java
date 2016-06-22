@@ -28,6 +28,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -46,9 +47,9 @@ public interface AddressService {
     @Headers({ "Content-Type: application/json" })
     Call<Void> create(@Body AddressRequestVO body);
 
-    @POST(PATH_ID)
+    @PUT(PATH_ID)
     @Headers({ "Content-Type: application/json" })
-    Call<AddressResponseVO> put(@Body AddressUpdateRequestVO body);
+    Call<AddressResponseVO> put(@Path("id") Long id, @Body AddressUpdateRequestVO body);
 
     @DELETE(PATH_ID)
     Call<Void> delete(@Path("id") Long id);
